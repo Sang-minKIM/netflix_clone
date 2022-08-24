@@ -31,8 +31,8 @@ const BtnContainer = styled.div`
   align-items: center;
 `;
 const GoBackBtn = styled.button`
-  width: 70%;
-  height: 70%;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: solid;
   padding-bottom: 5%;
