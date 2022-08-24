@@ -47,6 +47,7 @@ const GoBackBtn = styled.button`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  text-align: center;
 `;
 const Loader = styled.span`
   text-align: center;
