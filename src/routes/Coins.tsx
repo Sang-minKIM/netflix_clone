@@ -1,8 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atoms";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -17,13 +21,14 @@ const Header = styled.header`
 `;
 const Title = styled.h1`
   font-size: 48px;
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.accentColor};
   font-weight: 500;
 `;
 const CoinsList = styled.ul``;
 const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.cardBgColor};
+  color: ${(props) => props.theme.textColor};
+  border: 1px solid white;
   border-radius: 15px;
   margin-bottom: 10px;
 
@@ -52,6 +57,33 @@ const Img = styled.img`
   height: 35px;
   margin-right: 10px;
 `;
+export const NavigationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 30px;
+  left: 30px;
+`;
+
+export const NavigationIcon = styled.div`
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: ${(props) => props.theme.textColor};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-top: 2px;
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    font-size: 22px;
+    background-color: inherit;
+    color: ${(props) => props.theme.bgColor};
+  }
+`;
 
 interface ICoin {
   id: string;
@@ -77,12 +109,30 @@ const Coins = () => {
 
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
   console.log(isLoading, data);
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
 
   return (
     <Container>
       <Helmet>
         <title>Coins</title>
       </Helmet>
+      <NavigationContainer>
+        {isDark ? (
+          <NavigationIcon onClick={toggleDarkAtom}>
+            <Link to={"/"}>
+              <FontAwesomeIcon icon={faSun} />
+            </Link>
+          </NavigationIcon>
+        ) : (
+          <NavigationIcon onClick={toggleDarkAtom}>
+            <Link to={"/"}>
+              <FontAwesomeIcon icon={faMoon} />
+            </Link>
+          </NavigationIcon>
+        )}
+      </NavigationContainer>
       <Header>
         <Title>Cryto Tracker</Title>
       </Header>

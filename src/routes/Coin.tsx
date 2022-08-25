@@ -1,16 +1,19 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import {
   Link,
   Outlet,
   useLocation,
   useMatch,
-  useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { NavigationContainer, NavigationIcon } from "./Coins";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -23,27 +26,7 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
 `;
-const BtnContainer = styled.div`
-  width: 8vh;
-  height: 8vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const GoBackBtn = styled.button`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: solid;
-  padding-bottom: 5%;
-  background-color: inherit;
-  color: ${(props) => props.theme.textColor};
-  font-size: x-large;
-  border-color: ${(props) => props.theme.textColor};
-  :hover {
-    cursor: pointer;
-  }
-`;
+
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
@@ -177,28 +160,10 @@ const Coin = () => {
       }
     );
 
-  // const [loading, setLoading] = useState(true);
-  // const [info, setInfo] = useState<IInfoData>();
-  // const [priceInfo, setPriceInfo] = useState<IPriceData>();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const infoData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-  //     ).json();
-  //     const priceData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-  //     ).json();
-  //     setInfo(infoData);
-  //     setPriceInfo(priceData);
-  //     setLoading(false);
-  //   })();
-  // }, [coinId]);
   const loading = infoLoading || tickersLoading;
-  const navigate = useNavigate();
-  const goBack = () => {
-    navigate("/");
-  };
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   return (
     <Container>
       <Helmet>
@@ -206,14 +171,26 @@ const Coin = () => {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
+      <NavigationContainer>
+        <NavigationIcon>
+          <Link to={"/"}>
+            <FontAwesomeIcon icon={faHome} />
+          </Link>
+        </NavigationIcon>
+        {isDark ? (
+          <NavigationIcon onClick={toggleDarkAtom}>
+            <FontAwesomeIcon icon={faSun} />
+          </NavigationIcon>
+        ) : (
+          <NavigationIcon onClick={toggleDarkAtom}>
+            <FontAwesomeIcon icon={faMoon} />
+          </NavigationIcon>
+        )}
+      </NavigationContainer>
       <Header>
-        <BtnContainer>
-          <GoBackBtn onClick={goBack}>&larr;</GoBackBtn>
-        </BtnContainer>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
-        <BtnContainer />
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
