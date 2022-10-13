@@ -15,8 +15,10 @@
     "@types/node": "^16.11.52",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
     "apexcharts": "^3.35.5",
+    "framer-motion": "^7.3.6",
     "gh-pages": "^4.0.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
@@ -63,6 +65,5 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-fontawesome": "^1.6.5",
     "@types/react-helmet": "^6.1.5"
-  },
-  "homepage": "https://Sang-minKIM.github.io/React-Crypto-tracker"
+  }
 }
