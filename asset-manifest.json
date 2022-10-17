@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/netfilx_clone/static/js/main.2e9e3231.js",
+    "static/js/787.13312aec.chunk.js": "/netfilx_clone/static/js/787.13312aec.chunk.js",
+    "index.html": "/netfilx_clone/index.html",
+    "main.2e9e3231.js.map": "/netfilx_clone/static/js/main.2e9e3231.js.map",
+    "787.13312aec.chunk.js.map": "/netfilx_clone/static/js/787.13312aec.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.2e9e3231.js"
+  ]
+}
