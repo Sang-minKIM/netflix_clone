@@ -91,7 +91,7 @@ const logoVariants = {
     fillOpacity: 1,
   },
   active: {
-    fillOpacity: [0, 1, 0],
+    fillOpacity: [0, 1],
     transition: {
       repeat: Infinity,
     },
@@ -114,10 +114,10 @@ function Header() {
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const openSearch = () => {
-    if (searchOpen) {
-      inputAnimation.start({ scaleX: 0 });
-    } else {
+    if (searchOpen === false) {
       inputAnimation.start({ scaleX: 1 });
+    } else {
+      inputAnimation.start({ scaleX: 0 });
     }
     setSearchOpen((prev) => !prev);
   };
@@ -162,6 +162,7 @@ function Header() {
             transition={{ type: "linear" }}
             animate={inputAnimation}
             placeholder="제목, 사람, 장르"
+            initial={{ scaleX: 0 }}
           />
           <motion.svg
             onClick={openSearch}
