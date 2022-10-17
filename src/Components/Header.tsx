@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { motion, useAnimation, useScroll } from "framer-motion";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -28,7 +29,6 @@ const Logo = styled(motion.svg)`
   fill: ${(props) => props.theme.red};
   path {
     stroke-width: 6px;
-    stroke: white;
   }
 `;
 
@@ -62,7 +62,7 @@ const Circle = styled(motion.span)`
   margin: 0 auto;
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   position: relative;
   color: white;
   display: flex;
@@ -106,7 +106,12 @@ const navVariants = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
+  const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const { scrollY } = useScroll();
   const homeMatch = useMatch("/");
@@ -130,6 +135,11 @@ function Header() {
       }
     });
   }, [navAnimation, scrollY]);
+  const { register, handleSubmit } = useForm<IForm>();
+  const onValid = (data: IForm) => {
+    console.log(data);
+    navigate(`/search?keyword=${data.keyword}`);
+  };
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
@@ -149,16 +159,20 @@ function Header() {
             <Link to="/">홈{homeMatch && <Circle layoutId="circle" />}</Link>
           </Item>
           <Item>
-            <Link to="tv">
-              시리즈
-              {tvMatch && <Circle layoutId="circle" />}
-            </Link>
+            <Link to="tv">시리즈{tvMatch && <Circle layoutId="circle" />}</Link>
+          </Item>
+          <Item>
+            <Link to="">"NEW! 요즘 대세 콘텐츠</Link>
+          </Item>
+          <Item>
+            <Link to="">내가 찜한 콘텐츠</Link>
           </Item>
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <Input
+            {...register("keyword", { required: true, minLength: 2 })}
             transition={{ type: "linear" }}
             animate={inputAnimation}
             placeholder="제목, 사람, 장르"
